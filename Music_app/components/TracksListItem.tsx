@@ -1,9 +1,11 @@
 import { colors, fontSize } from "@/constants/Colors";
 import { unknownTrackImageUri } from "@/constants/image";
 import { defaultStyles, utilsStyles } from "@/styles";
+import { Entypo } from "@expo/vector-icons";
 import { Text } from "react-native";
 import { Image, StyleSheet, View } from "react-native";
 import { TouchableHighlight } from "react-native";
+// import { Track, useActiveTrack } from "react-native-track-player";
 
 export type TracksListItemProps = {
   track: {
@@ -11,6 +13,7 @@ export type TracksListItemProps = {
     image?: string;
     artist?: string;
   };
+  // track: Track;
 };
 
 const TracksListItem = ({ track }: TracksListItemProps) => {
@@ -34,27 +37,30 @@ const TracksListItem = ({ track }: TracksListItemProps) => {
             }}
           />
         </View>
-        {/* Title + Artist  */}
-        <View style={{ width: "100%" }}>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...styles.trackTitleText,
-              color: isActive ? colors.primary : colors.text,
-            }}
-          >
-            {track.title}
-          </Text>
-          {track.artist && (
+        <View>
+          {/* Title + Artist  */}
+          <View style={{ width: "100%" }}>
             <Text
               numberOfLines={1}
               style={{
-                ...styles.trackArtistText,
+                ...styles.trackTitleText,
+                color: isActive ? colors.primary : colors.text,
               }}
             >
-              {track.artist}
+              {track.title}
             </Text>
-          )}
+            {track.artist && (
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...styles.trackArtistText,
+                }}
+              >
+                {track.artist}
+              </Text>
+            )}
+          </View>
+          <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
         </View>
       </View>
     </TouchableHighlight>
