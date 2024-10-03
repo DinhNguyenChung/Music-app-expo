@@ -15,9 +15,45 @@ export default function RootLayout() {
 
 const RootNavigation = () => {
   return (
-    <Stack>
+    <Stack initialRouteName="launch">
+      <Stack.Screen
+        name="launch"
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="(tabs)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="launchPremium"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="signup"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="premium"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="registerPassword"
         options={{
           headerShown: false,
         }}

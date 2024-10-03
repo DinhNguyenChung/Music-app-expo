@@ -12,6 +12,7 @@ import { StyleSheet } from "react-native";
 const TabsNavigation = () => {
   return (
     <Tabs
+      initialRouteName="home"
       screenOptions={{
         tabBarActiveTintColor: "cyan",
         tabBarInactiveTintColor: "gray",
@@ -22,12 +23,12 @@ const TabsNavigation = () => {
         headerShown: false,
         tabBarStyle: {
           position: "absolute",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderTopWidth: 1,
-          borderLeftWidth: 1,
-          borderRightWidth: 1,
           paddingVertical: 8,
+          // borderTopWidth: 1,
+          // borderTopLeftRadius: 20,
+          // borderTopRightRadius: 20,
+          // borderLeftWidth: 1,
+          // borderRightWidth: 1,
         },
         tabBarBackground: () => (
           <BlurView
@@ -35,10 +36,10 @@ const TabsNavigation = () => {
             style={{
               ...StyleSheet.absoluteFillObject,
               overflow: "hidden",
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              // backgroundColor: "rgba(255,255,255,0.5)",
               backgroundColor: "#fff",
+              // borderTopLeftRadius: 20,
+              // borderTopRightRadius: 20,
+              // backgroundColor: "rgba(255,255,255,0.5)",
             }}
           />
         ),
