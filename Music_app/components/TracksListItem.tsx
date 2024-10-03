@@ -37,7 +37,14 @@ const TracksListItem = ({ track }: TracksListItemProps) => {
             }}
           />
         </View>
-        <View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           {/* Title + Artist  */}
           <View style={{ width: "100%" }}>
             <Text
@@ -59,8 +66,20 @@ const TracksListItem = ({ track }: TracksListItemProps) => {
                 {track.artist}
               </Text>
             )}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "25%",
+              }}
+            >
+              <Text style={{ ...styles.trackArtistTextViewandTime }}>2,1M</Text>
+              <Text style={{ ...styles.trackArtistTextViewandTime }}>3:45</Text>
+            </View>
           </View>
-          <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
+          <Entypo name="dots-three-horizontal" size={18} color={"gray"} />
         </View>
       </View>
     </TouchableHighlight>
@@ -92,6 +111,12 @@ const styles = StyleSheet.create({
     ...defaultStyles.text,
     color: colors.textMuted,
     fontSize: 14,
+    marginTop: 4,
+  },
+  trackArtistTextViewandTime: {
+    ...defaultStyles.text,
+    color: colors.textMuted,
+    fontSize: 12,
     marginTop: 4,
   },
 });
