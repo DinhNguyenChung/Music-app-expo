@@ -3,19 +3,19 @@ import { Stack } from "expo-router";
 import { Text, View } from "react-native";
 import { StackScreenWithSeachBar } from "@/constants/layout";
 
-const SearchScreenLayout = () => {
+const Login = () => {
   return (
     <View style={defaultStyles.container}>
       <Stack>
         <Stack.Screen
           name="index"
           options={{
-            ...StackScreenWithSeachBar,
-            headerTitle: "Search",
+            headerTitle: "launchPremium",
+            headerShown: false,
           }}
         />
       </Stack>
     </View>
   );
 };
-export default SearchScreenLayout;
+export default Login;

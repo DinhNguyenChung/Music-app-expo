@@ -10,9 +10,32 @@ const HomeScreenLayout = () => {
         <Stack.Screen
           name="index"
           options={{
-            ...StackScreenWithSeachBar,
-            headerTitle: "Home",
+            // ...StackScreenWithSeachBar,
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="detailsChart"
+          options={{
+            headerTitle: '',
+            headerBackTitle: 'Back',
+            headerStyle: {backgroundColor: 'transparent'},
+          }}
+        />
+        <Stack.Screen
+          name="detailsTrending"
+          options={{
+            headerTitle: '',
+            headerBackTitle: 'Back',
+            headerStyle: {backgroundColor: 'transparent'},
+          }}
+        />    
+        <Stack.Screen
+          name="artistProfile"
+          options={{
+            headerTitle: '',
+            headerBackTitle: 'Back',
+            headerStyle: {backgroundColor: 'transparent'},
           }}
         />
       </Stack>
