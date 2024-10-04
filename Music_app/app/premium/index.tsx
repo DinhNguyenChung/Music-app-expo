@@ -55,8 +55,9 @@ const SubscribePremium = () => {
         marginHorizontal: 10,
         borderRadius: 10,
         elevation: 5,
-        width: 300,
+        width: 350,
         height: 400,
+        marginStart: 30
     }}>
         {/* Hiển thị tên gói Premium */}
         <View>
@@ -80,12 +81,12 @@ const SubscribePremium = () => {
         ))}
 
         {/* Nút Subscribe */}
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 'auto'}}>
             <Button
                 title="Subscribe"
                 titleStyle={{fontWeight: 'bold', fontSize: 20, color: 'black'}}
-                buttonStyle={{backgroundColor: '#3BE477', width: '100%', height: 50, borderRadius: 25}}
-                onPress={() => router.push("(tabs)")}
+                buttonStyle={{backgroundColor: '#3BE477', width: '100%', height: 50, borderRadius: 25, marginBottom: 20}}
+                onPress={() => router.push("/(tabs)/home")}
             />
         </View>
     </View>
@@ -109,7 +110,7 @@ const SubscribePremium = () => {
                 showsHorizontalScrollIndicator={false}
             />
             <View style={{paddingBottom: 70}}>
-                <TouchableOpacity onPress={() => router.push("(tabs)")}>
+                <TouchableOpacity onPress={() => router.push("/(tabs)/home")}>
                     <Text style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>Back home</Text>
                 </TouchableOpacity>
             </View>

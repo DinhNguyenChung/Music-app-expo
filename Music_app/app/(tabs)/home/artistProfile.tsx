@@ -34,16 +34,54 @@ const getImageSource = (imageName) => {
         //     return require("../../../assets/DetailsChart/Flower.png");
     }
 };
+const dataAlbum = [
+  {
+    id: 1,
+    title: "ME",
+    artists: "Jessica Gonzalez",
+    img: require("../../../assets/Home/Album1.png")
+  },
+  {
+    id: 2,
+    title: "Magna nost",
+    artists: "Brian Thomas",
+    img: require("../../../assets/Home/Album2.png")
+  },
+  {
+    id: 3,
+    title: "Magna nost",
+    artists: "Christoper",
+    img: require("../../../assets/Home/Album3.png")
+  },
+]
+const dataFansAlsoLike = [
+    {
+        id: 1,
+        title: "Magna nost",
+        artists: "Jessica Gonzalez",
+        img: require("../../../assets/ArtistProfile/Image 74.png")
+    },
+    {
+        id: 2,
+        title: "Exercitatio",
+        artists: "Brian Harris",
+        img: require("../../../assets/ArtistProfile/Image 75.png")
+    },
+    {
+        id: 3,
+        title: "Tempor nost",
+        artists: "Tyler Gonzalez",
+        img: require("../../../assets/ArtistProfile/Image 76.png")
+    },
+]
 
 const ArtistProfile = () => {
 
     const {id, singer, img} = useLocalSearchParams();
     const router = useRouter();
-
     const toggleFullScreen = () => {
         setIsFullScreen(!isFullScreen);
     };
-
     const [isPlaying, setIsPlaying] = useState(false);
     // Khai báo biến state để lưu bài hát hiện tại
     const [currentSong, setCurrentSong] = useState(null);
@@ -56,7 +94,8 @@ const ArtistProfile = () => {
         toggleFullScreen(); // Gọi lại hàm để mở rộng modal
     };
 
-    const renderItem = ({item}) => (
+    const renderItem = ({item}) => {
+        return (
         <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center', justifyContent: 'space-between'}}>
             <TouchableOpacity
                 style={{ flexDirection: 'row'}}
@@ -84,10 +123,23 @@ const ArtistProfile = () => {
                 <Entypo name="dots-three-horizontal" size={20} color="black" />
             </View>
         </View>
+        );
+        
+    };
+
+    const render = ({ item }) => (
+        <TouchableOpacity>
+            <Image
+            source={item.img}
+            style={{width: 140, height: 140, borderRadius: 10, marginRight: 20}}
+            />
+            <Text style={{fontSize: 17, marginTop: 5, width: 140}}>{item.title}</Text>
+            <Text style={{fontSize: 17, marginTop: 5, width: 140, opacity: 0.5}}>{item.artists}</Text>
+        </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: 'white', marginBottom: 100}}>
             <View style={{alignItems: 'center', gap: 10, padding: 10}}>
                 <Image
                     source={img}
@@ -116,22 +168,66 @@ const ArtistProfile = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-
-            {/* Danh sách nhạc được nghe nhiều nhất */}
-            <View style={{ padding: 20, flex: 1 }}>
-                <Text style={{fontSize: 25, fontWeight: 'bold', paddingBottom: 10}}>Popular</Text>
-                <View>
+            <ScrollView>
+                {/* Danh sách nhạc được nghe nhiều nhất */}
+                <View style={{ padding: 20, flex: 1 }}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', paddingBottom: 10}}>Popular</Text>
                     <FlatList
                         data={dataPopular}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id.toString()}
                         showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{ paddingBottom: 50 }}
+                        // contentContainerStyle={{ paddingBottom: 50 }}
+                    />
+                        
+                </View>
+                {/* Mục Albums */}
+                <View style={{ padding: 20, flex: 1 }}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', paddingBottom: 10}}>Albums</Text>
+                    <FlatList
+                        data={dataAlbum}
+                        renderItem={render}
+                        keyExtractor={(item) => item.id.toString()}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        contentContainerStyle={{ paddingBottom: 30}}
                     />
                 </View>
-            </View>
-
-
+                {/* About */}
+                <View style={{paddingLeft: 20, paddingRight: 20}}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', paddingBottom: 10}}>Popular</Text>
+                    <Image
+                        source={require("../../../assets/ArtistProfile/About.png")}
+                        style={{width: '100%', height: 200, borderRadius: 5}}
+                    />
+                    <Text style={{textAlign: 'justify', fontSize: 18, color: '#8F8686', paddingTop: 10}}>
+                        Do in cupidatat aute et in officia aute laboris est
+                        Lorem est nisi dolor consequat voluptate duis irure.
+                        Veniam quis amet irure cillum elit aliquip sunt cillum
+                        cillum do aliqua voluptate ad non magna elit.
+                        Do ea natur laborum ipsum mollit excepteur in tempor incididunt.
+                        Exercitation cillum sint aliqua qui do deserunt.
+                        Quis magna minim in cupidatat occaecat aute culpa nisi.
+                        Voluptate non esse qui in dolore id est sunt cillum veniam.
+                        Eu voluptate ex aliqua nostrud qui consequat anim.
+                        Excepteur eiusmod fugiat tempor exercitation reprehenderit irure magna labore officia.
+                        Ullamco cupidatat nisi sunt ut commodo deserunt est dolor sit aute incididunt occaecat.
+                        Laboris in enim aute anim fugiat non excepteur pariatur.
+                    </Text>
+                </View>
+                {/* Fans also like */}
+                <View style={{ padding: 20, flex: 1 }}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', paddingBottom: 10}}>Fans also like</Text>
+                    <FlatList
+                        data={dataFansAlsoLike}
+                        renderItem={render}
+                        keyExtractor={(item) => item.id.toString()}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        contentContainerStyle={{ paddingBottom: 30}}
+                    />
+                </View>
+            </ScrollView>
             {/* Thanh điều khiển nhạc nổi */}
             {isPlaying && currentSong && (
                 <View
@@ -194,7 +290,7 @@ const ArtistProfile = () => {
                     )}
                 </View>
             )}
-
+            
         </SafeAreaView>
     );
 }

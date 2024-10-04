@@ -19,6 +19,8 @@ import { useState } from "react";
 
 const getImageSource = (imageName) => {
     switch (imageName) {
+        // let a = '../../../assets/DetailsChart/' + imageName + '.png';
+        // return require(a);
         case 'Flower':
             return require("../../../assets/DetailsChart/Flower.png");
         case 'ShapeOfYou':
@@ -33,7 +35,7 @@ const getImageSource = (imageName) => {
             return require("../../../assets/DetailsChart/Astronaut.png");
         case 'Dynamite':
             return require("../../../assets/DetailsChart/Dynamite.png");                                         
-        // default:
+        // // default:
         //     return require("../../../assets/DetailsChart/Flower.png");
     }
 };
@@ -69,6 +71,8 @@ const DetailChart = () => {
                 <View>
                     <Image
                         source={getImageSource(item.img)}
+                        // source={require("../../../assets/DetailsChart/Flower.png")}
+                        // source={require(item.img)}
                         style={{ width: 65, height: 65, borderRadius: 5, marginRight: 10 }}
                     />
                 </View>

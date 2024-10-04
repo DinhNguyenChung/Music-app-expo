@@ -143,13 +143,11 @@ const HomeScreen = () => {
     <SafeAreaView style={{flex: 1, width: '90%', alignSelf: 'center'}}>
       {/* Tiêu đề */}
       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingTop: 10}}>
-        <TouchableOpacity>
-          <View>
+        <TouchableOpacity onPress={() => router.push("/premium")}>
             <Image
               source={require("../../../assets/Home/IconColor.png")}
               style={{width: 40, height: 40}}
             />
-          </View>
         </TouchableOpacity>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
           <TouchableOpacity>

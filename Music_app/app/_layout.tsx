@@ -3,11 +3,12 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Stack } from "expo-router";
 import { SafeAreaView, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Launch from "./launch";
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <RootNavigation />
+      <RootNavigation/>
       <ExpoStatusBar style="auto" />
     </SafeAreaProvider>
   );
@@ -22,6 +23,7 @@ const RootNavigation = () => {
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="(tabs)"
         options={{
