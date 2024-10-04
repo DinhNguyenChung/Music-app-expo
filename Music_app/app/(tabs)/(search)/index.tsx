@@ -1,13 +1,90 @@
 import TracksList from "@/components/TracksList";
 import { useNavigationSearch } from "@/hooks/useNavigationSearch";
 import { defaultStyles, utilsStyles } from "@/styles";
-import { useMemo } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import {
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import library from "@/assets/data/library.json";
 import { trackTitleFilter } from "@/helpers/filter";
 import { screenPadding } from "@/constants/Colors";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { TracksTab } from "@/components/tabsSearch/TracksTab";
+import { ArtistsTabs } from "@/components/tabsSearch/ArtistsTabs";
+import { AlbumsTabs } from "@/components/tabsSearch/AlbumsTabs";
+import { useTrackContext } from "@/components/TracksContext";
 
-const SearchScreen = () => {
+// const AllTab = ({
+//   tracks,
+//   onTrackSelect,
+// }: {
+//   tracks: any[];
+//   onTrackSelect: (track: any) => void;
+// }) => (
+//   <ScrollView
+//     contentInsetAdjustmentBehavior="automatic"
+//     // style={{ paddingHorizontal: screenPadding.horizontal }}
+//     style={{ paddingRight: 60 }}
+//   >
+//     <TracksList
+//       tracks={tracks}
+//       onTrackSelect={(selectedTrack) => {
+//         console.log("TrackList selected:", selectedTrack);
+//         // Gọi hàm từ TabsNavigation
+//         handleTrackSelect(selectedTrack);
+//       }}
+//       scrollEnabled={false}
+//     />
+//   </ScrollView>
+// );
+const AllTab = ({ tracks }: { tracks: any[] }) => {
+  // Gọi Hook ở cấp độ cao nhất
+  const { handleTrackSelect } = useTrackContext();
+
+  // Kiểm tra nếu handleTrackSelect không tồn tại
+  if (!handleTrackSelect) {
+    console.error("handleTrackSelect là null hoặc không xác định");
+    return null; // Hoặc render UI dự phòng
+  }
+  return (
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={{ paddingRight: 60 }}
+    >
+      {tracks.length === 0 ? (
+        <Text>No tracks found</Text>
+      ) : (
+        <TracksList
+          tracks={tracks}
+          onTrackSelect={(selectedTrack) => {
+            console.log("TrackList selected:", selectedTrack);
+            handleTrackSelect(selectedTrack);
+          }}
+          scrollEnabled={false}
+        />
+      )}
+    </ScrollView>
+  );
+};
+const context = useTrackContext();
+console.log("Track context:", context);
+
+const TracksTabs = () => <TracksTab />;
+
+const AlbumsTab = () => <AlbumsTabs />;
+
+const ArtistsTab = () => <ArtistsTabs />;
+
+const SearchScreen = ({
+  onTrackSelect,
+}: {
+  onTrackSelect: (track: any) => void;
+}) => {
   const search = useNavigationSearch({
     searchBarOptions: {
       placeholder: "Search songs",
@@ -17,14 +94,45 @@ const SearchScreen = () => {
     if (!search) return library;
     return library.filter(trackTitleFilter(search));
   }, [search]);
+
+  // Quản lý trạng thái cho tab
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "all", title: "All" },
+    { key: "tracks", title: "Tracks" },
+    { key: "albums", title: "Albums" },
+    { key: "artists", title: "Artists" },
+  ]);
+
+  const renderScene = SceneMap({
+    all: () => <AllTab tracks={filteredSongs} />,
+    tracks: TracksTabs,
+    albums: AlbumsTab,
+    artists: ArtistsTab,
+  });
   return (
     <SafeAreaView style={defaultStyles.container}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{ paddingHorizontal: screenPadding.horizontal }}
-      >
-        <TracksList tracks={filteredSongs} scrollEnabled={false} />
-      </ScrollView>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: Dimensions.get("window").width }}
+        style={{ paddingHorizontal: 24 }}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: "cyan", height: 3 }}
+            style={{ backgroundColor: "white" }}
+            labelStyle={{
+              color: "gray",
+              fontSize: 15,
+              textTransform: "none",
+              fontWeight: "600",
+            }}
+            activeColor={"cyan"}
+          />
+        )}
+      />
     </SafeAreaView>
   );
 };

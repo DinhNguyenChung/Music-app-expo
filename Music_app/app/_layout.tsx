@@ -3,13 +3,17 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Stack } from "expo-router";
 import { SafeAreaView, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { TrackProvider } from "@/components/TracksContext";
+import { AudioProvider } from "@/components/AudioContext";
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <RootNavigation />
-      <ExpoStatusBar style="auto" />
-    </SafeAreaProvider>
+    <AudioProvider>
+      <TrackProvider>
+        <RootNavigation />
+        <ExpoStatusBar style="auto" />
+      </TrackProvider>
+    </AudioProvider>
   );
 }
 
@@ -56,6 +60,15 @@ const RootNavigation = () => {
         name="registerPassword"
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PlayerScreen"
+        options={{
+          headerShown: false,
+          gestureEnabled: true, // Cho phép vuốt để quay lại
+          // presentation: "modal", // Sử dụng chế độ modal để tự động có hiệu ứng trượt từ dưới lên
+          animation: "slide_from_bottom", // Sử dụng animation mặc định để trượt từ dưới lên
         }}
       />
     </Stack>
