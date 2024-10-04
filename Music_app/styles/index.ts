@@ -40,4 +40,21 @@ export const utilsStyles = StyleSheet.create({
     marginTop: 40,
     opacity: 0.3,
   },
+  ModalTrack: {
+    position: "absolute",
+    bottom: 80, // Căn chỉnh bên trên tab bar (điều chỉnh nếu cần)
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    backgroundColor: "#fff", // Hoặc màu bạn muốn cho thanh
+    padding: 15, // Khoảng cách bên trong cho nội dung
+    // borderRadius: 10, // Tạo bo góc
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5, // Đổ bóng cho Android
+    height: 70, // Chiều cao của thanh
+    borderTopWidth: 1, // Đường viền trên
+  },
 });

@@ -11,12 +11,7 @@ const SearchScreenLayout = () => {
           name="index"
           options={{
             ...StackScreenWithSeachBar,
-            // headerTitle: "",
-
-            // headerTitleAlign: "center",
-            headerStyle: {
-              // height: 50,
-            } as React.CSSProperties,
+            headerStyle: {} as React.CSSProperties,
           }}
         />
       </Stack>

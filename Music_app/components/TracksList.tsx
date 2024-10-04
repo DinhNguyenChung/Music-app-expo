@@ -1,9 +1,25 @@
-import { FlatList, FlatListProps, View } from "react-native";
+import {
+  FlatList,
+  FlatListProps,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import library from "@/assets/data/library.json";
 import TracksListItem from "./TracksListItem";
 import { utilsStyles } from "@/styles";
+
+export type Track = {
+  title: string;
+  artist: string;
+  url: string;
+  artwork?: string; // artwork is optional
+};
+
 export type TracksListProps = Partial<FlatListProps<any>> & {
-  tracks: any[];
+  // tracks: any[];
+  tracks: Track[];
+  onTrackSelect: (track: any) => void;
 };
 const ItemDivider = () => (
   <View
@@ -11,23 +27,36 @@ const ItemDivider = () => (
   />
 );
 
-const TracksList = ({ tracks, ...flastListProps }: TracksListProps) => {
+const TracksList = ({
+  tracks,
+  onTrackSelect,
+  ...flastListProps
+}: TracksListProps) => {
   return (
-    <FlatList
-      data={tracks}
-      contentContainerStyle={{ paddingBottom: 128, paddingTop: 10 }}
-      ListFooterComponent={ItemDivider}
-      ItemSeparatorComponent={ItemDivider}
-      renderItem={({ item: track }) => (
-        <TracksListItem
-          track={{
-            ...track,
-            image: track.artwork,
-          }}
-        />
-      )}
-      {...flastListProps}
-    />
+    <View>
+      <FlatList
+        data={tracks}
+        contentContainerStyle={{ paddingBottom: 128, paddingTop: 10 }}
+        ListFooterComponent={ItemDivider}
+        ItemSeparatorComponent={ItemDivider}
+        renderItem={({ item: track, index }) => (
+          <TouchableOpacity onPress={() => onTrackSelect(track)}>
+            <TracksListItem
+              track={{
+                ...track,
+                image: track.artwork,
+              }}
+              tracks={tracks}
+              index={index}
+              onTrackSelect={() => {
+                onTrackSelect(track);
+              }}
+            />
+          </TouchableOpacity>
+        )}
+        {...flastListProps}
+      />
+    </View>
   );
 };
 

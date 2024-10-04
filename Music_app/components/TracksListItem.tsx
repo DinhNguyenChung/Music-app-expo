@@ -2,9 +2,14 @@ import { colors, fontSize } from "@/constants/Colors";
 import { unknownTrackImageUri } from "@/constants/image";
 import { defaultStyles, utilsStyles } from "@/styles";
 import { Entypo } from "@expo/vector-icons";
+import { NavigationProp } from "@react-navigation/native";
+import { useNavigation } from "expo-router";
 import { Text } from "react-native";
 import { Image, StyleSheet, View } from "react-native";
 import { TouchableHighlight } from "react-native";
+import { useAudio } from "./AudioContext";
+import { useTrackContext } from "./TracksContext";
+
 // import { Track, useActiveTrack } from "react-native-track-player";
 
 export type TracksListItemProps = {
@@ -12,77 +17,119 @@ export type TracksListItemProps = {
     title: string;
     image?: string;
     artist?: string;
+    url?: string;
   };
-  // track: Track;
+  //PlayerSCreen
+  tracks: any[]; // Truyền danh sách bài hát vào props
+  index: number; // Thêm index vào props
+  // của TracksListItem
+  onTrackSelect: (track: TracksListItemProps["track"]) => void; // Callback để chọn track
 };
-
-const TracksListItem = ({ track }: TracksListItemProps) => {
+type RootStackParamList = {
+  PlayerScreen: {
+    track: { title: string; image?: string; artist?: string; url: string };
+    playlist: any; // Add the playlist property
+    currentTrackIndex: number; // Thêm currentTrackIndex
+  };
+};
+const TracksListItem = ({
+  track,
+  onTrackSelect,
+  tracks,
+  index,
+}: TracksListItemProps) => {
+  const { selectedTrack } = useTrackContext(); // Sử dụng hook từ thư viện react-native-track-player
   const isActive = false;
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { play } = useAudio(); // Sử dụng AudioContext
+  const handlePress = async () => {
+    if (play && track.url) {
+      onTrackSelect(track); // Chọn track khi nhấn
+      play(track.url); // Phát bài hát khi nhấn
+    } else {
+      console.error("Audio context is not available or track URL is invalid.");
+    }
+  };
+  const handleNavigateToPlayer = async () => {
+    navigation.navigate("PlayerScreen", {
+      track: selectedTrack, // bài hát đã chọn
+      playlist: tracks, // Truyền toàn bộ danh sách tracks
+      currentTrackIndex: index, // Truyền index của track
+    });
+  };
+
   return (
-    <TouchableHighlight>
-      <View
-        style={{
-          //   ...utilsStyles.centeredRow,
-          ...styles.trackItemContainer,
-        }}
-      >
-        <View>
-          <Image
-            source={{
-              uri: track.image ?? unknownTrackImageUri,
-            }}
-            style={{
-              ...styles.trackArtwordImage,
-              opacity: isActive ? 0.6 : 1,
-            }}
-          />
-        </View>
+    <>
+      <TouchableHighlight onPress={() => handlePress()}>
+        {/* Khi nhấn sẽ gọi hàm onTrackSelect */}
         <View
           style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            //   ...utilsStyles.centeredRow,
+            ...styles.trackItemContainer,
           }}
         >
-          {/* Title + Artist  */}
-          <View style={{ width: "100%" }}>
-            <Text
-              numberOfLines={1}
-              style={{
-                ...styles.trackTitleText,
-                color: isActive ? colors.primary : colors.text,
+          <View>
+            <Image
+              source={{
+                uri: track.image ?? unknownTrackImageUri,
               }}
-            >
-              {track.title}
-            </Text>
-            {track.artist && (
+              style={{
+                ...styles.trackArtwordImage,
+                opacity: isActive ? 0.6 : 1,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Title + Artist  */}
+            <View style={{ width: "100%" }}>
               <Text
                 numberOfLines={1}
                 style={{
-                  ...styles.trackArtistText,
+                  ...styles.trackTitleText,
+                  color: isActive ? colors.primary : colors.text,
                 }}
               >
-                {track.artist}
+                {track.title}
               </Text>
-            )}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "25%",
-              }}
-            >
-              <Text style={{ ...styles.trackArtistTextViewandTime }}>2,1M</Text>
-              <Text style={{ ...styles.trackArtistTextViewandTime }}>3:45</Text>
+              {track.artist && (
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    ...styles.trackArtistText,
+                  }}
+                >
+                  {track.artist}
+                </Text>
+              )}
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "25%",
+                }}
+              >
+                <Text style={{ ...styles.trackArtistTextViewandTime }}>
+                  2,1M
+                </Text>
+                <Text style={{ ...styles.trackArtistTextViewandTime }}>
+                  3:45
+                </Text>
+              </View>
             </View>
+            <Entypo name="dots-three-horizontal" size={18} color={"gray"} />
           </View>
-          <Entypo name="dots-three-horizontal" size={18} color={"gray"} />
         </View>
-      </View>
-    </TouchableHighlight>
+      </TouchableHighlight>
+    </>
   );
 };
 export default TracksListItem;

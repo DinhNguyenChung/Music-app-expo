@@ -2,7 +2,14 @@ import TracksList from "@/components/TracksList";
 import { useNavigationSearch } from "@/hooks/useNavigationSearch";
 import { defaultStyles, utilsStyles } from "@/styles";
 import { useMemo, useState } from "react";
-import { Dimensions, SafeAreaView, ScrollView, Text, View } from "react-native";
+import {
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import library from "@/assets/data/library.json";
 import { trackTitleFilter } from "@/helpers/filter";
 import { screenPadding } from "@/constants/Colors";
@@ -10,28 +17,74 @@ import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { TracksTab } from "@/components/tabsSearch/TracksTab";
 import { ArtistsTabs } from "@/components/tabsSearch/ArtistsTabs";
 import { AlbumsTabs } from "@/components/tabsSearch/AlbumsTabs";
+import { useTrackContext } from "@/components/TracksContext";
 
-const AllTab = ({ tracks }: { tracks: any[] }) => (
-  <ScrollView
-    contentInsetAdjustmentBehavior="automatic"
-    // style={{ paddingHorizontal: screenPadding.horizontal }}
-    style={{ paddingRight: 60 }}
-  >
-    <TracksList tracks={tracks} scrollEnabled={false} />
-  </ScrollView>
-);
-const TracksTabs = () => (
-  // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //   <Text>Tracks</Text>
-  // </View>
-  <TracksTab />
-);
+// const AllTab = ({
+//   tracks,
+//   onTrackSelect,
+// }: {
+//   tracks: any[];
+//   onTrackSelect: (track: any) => void;
+// }) => (
+//   <ScrollView
+//     contentInsetAdjustmentBehavior="automatic"
+//     // style={{ paddingHorizontal: screenPadding.horizontal }}
+//     style={{ paddingRight: 60 }}
+//   >
+//     <TracksList
+//       tracks={tracks}
+//       onTrackSelect={(selectedTrack) => {
+//         console.log("TrackList selected:", selectedTrack);
+//         // Gọi hàm từ TabsNavigation
+//         handleTrackSelect(selectedTrack);
+//       }}
+//       scrollEnabled={false}
+//     />
+//   </ScrollView>
+// );
+const AllTab = ({ tracks }: { tracks: any[] }) => {
+  // Gọi Hook ở cấp độ cao nhất
+  const { handleTrackSelect } = useTrackContext();
+
+  // Kiểm tra nếu handleTrackSelect không tồn tại
+  if (!handleTrackSelect) {
+    console.error("handleTrackSelect là null hoặc không xác định");
+    return null; // Hoặc render UI dự phòng
+  }
+  return (
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={{ paddingRight: 60 }}
+    >
+      {tracks.length === 0 ? (
+        <Text>No tracks found</Text>
+      ) : (
+        <TracksList
+          tracks={tracks}
+          onTrackSelect={(selectedTrack) => {
+            console.log("TrackList selected:", selectedTrack);
+            handleTrackSelect(selectedTrack);
+          }}
+          scrollEnabled={false}
+        />
+      )}
+    </ScrollView>
+  );
+};
+const context = useTrackContext();
+console.log("Track context:", context);
+
+const TracksTabs = () => <TracksTab />;
 
 const AlbumsTab = () => <AlbumsTabs />;
 
 const ArtistsTab = () => <ArtistsTabs />;
 
-const SearchScreen = () => {
+const SearchScreen = ({
+  onTrackSelect,
+}: {
+  onTrackSelect: (track: any) => void;
+}) => {
   const search = useNavigationSearch({
     searchBarOptions: {
       placeholder: "Search songs",
@@ -59,12 +112,6 @@ const SearchScreen = () => {
   });
   return (
     <SafeAreaView style={defaultStyles.container}>
-      {/* <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{ paddingHorizontal: screenPadding.horizontal }}
-      >
-        <TracksList tracks={filteredSongs} scrollEnabled={false} />
-      </ScrollView> */}
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
