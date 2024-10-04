@@ -43,6 +43,7 @@ const DetailChart = () => {
     const [currentSong, setCurrentSong] = useState(null);
     // Khai báo trạng thái cho việc mở rộng modal
     const [isFullScreen, setIsFullScreen] = useState(true);
+    // Lấy dữ liệu từ URL
     const {id, title, name, imgPath} = useLocalSearchParams();
     // Khai báo biến state dùng để hiển thị modal
     const [modalVisiblePlayMusic, setModalVisiblePlayMusic] = useState(false);
