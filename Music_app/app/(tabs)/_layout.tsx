@@ -68,6 +68,13 @@ const TabsNavigation = () => {
             name="feed"
             options={{
               title: "Feed",
+              headerTitleAlign: 'left',
+              headerTitleStyle: {fontSize: 20, fontWeight: 'bold'},
+              headerShown: true,
+              // headerTransparent: true,
+              headerRight: () => (
+                <MaterialCommunityIcons name="cast-connected" size={24} color="black" style={{padding: 10}} />
+              ),
               tabBarIcon: ({ color }) => (
                 <Ionicons name="newspaper-outline" size={24} color={color} />
               ),

@@ -28,7 +28,6 @@ export const useNavigationSearch = ({
       headerSearchBarOptions: {
         ...defaultSearchOptons,
         ...searchBarOptions,
-
         onChangeText: handleOnChangeText,
       },
     });
