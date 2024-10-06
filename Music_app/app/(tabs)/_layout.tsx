@@ -7,12 +7,31 @@ import {
 import { fontSize } from "@/constants/Colors";
 import { BlurView } from "expo-blur";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+// Dummy play function for demonstration purposes
+
 import { useTrackContext } from "@/components/TracksContext";
+import { useAudio } from "@/components/AudioContext";
 
 const TabsNavigation = () => {
+  const { play, pause, stop } = useAudio(); // Gọi Hook ở đây
   const { selectedTrack } = useTrackContext(); // Gọi Hook ở đây
-
+  const [isPlaying, setIsPlaying] = useState(true);
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      pause(); // Dừng phát
+    } else {
+      const urlToPlay =
+        selectedTrack && selectedTrack.url ? selectedTrack.url : null;
+      if (urlToPlay) {
+        play(urlToPlay); // Phát bài hát
+      } else {
+        console.error("No valid URL to play.");
+      }
+    }
+    setIsPlaying(!isPlaying); // Cập nhật trạng thái phát/dừng
+  };
   useEffect(() => {
     console.log("Selected track:", selectedTrack);
   }, [selectedTrack]);
@@ -68,12 +87,17 @@ const TabsNavigation = () => {
             name="feed"
             options={{
               title: "Feed",
-              headerTitleAlign: 'left',
-              headerTitleStyle: {fontSize: 20, fontWeight: 'bold'},
+              headerTitleAlign: "left",
+              headerTitleStyle: { fontSize: 20, fontWeight: "bold" },
               headerShown: true,
               // headerTransparent: true,
               headerRight: () => (
-                <MaterialCommunityIcons name="cast-connected" size={24} color="black" style={{padding: 10}} />
+                <MaterialCommunityIcons
+                  name="cast-connected"
+                  size={24}
+                  color="black"
+                  style={{ padding: 10 }}
+                />
               ),
               tabBarIcon: ({ color }) => (
                 <Ionicons name="newspaper-outline" size={24} color={color} />
@@ -139,10 +163,12 @@ const TabsNavigation = () => {
               )}
             </View>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handlePlayPause}>
                 <MaterialCommunityIcons
-                  name="play-circle-outline"
-                  size={40}
+                  name={
+                    isPlaying ? "pause-circle-outline" : "play-circle-outline"
+                  }
+                  size={45}
                   color="gray"
                 />
               </TouchableOpacity>

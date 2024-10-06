@@ -19,29 +19,6 @@ import { ArtistsTabs } from "@/components/tabsSearch/ArtistsTabs";
 import { AlbumsTabs } from "@/components/tabsSearch/AlbumsTabs";
 import { useTrackContext } from "@/components/TracksContext";
 
-// const AllTab = ({
-//   tracks,
-//   onTrackSelect,
-// }: {
-//   tracks: any[];
-//   onTrackSelect: (track: any) => void;
-// }) => (
-//   <ScrollView
-//     contentInsetAdjustmentBehavior="automatic"
-//     // style={{ paddingHorizontal: screenPadding.horizontal }}
-//     style={{ paddingRight: 60 }}
-//   >
-//     <TracksList
-//       tracks={tracks}
-//       onTrackSelect={(selectedTrack) => {
-//         console.log("TrackList selected:", selectedTrack);
-//         // Gọi hàm từ TabsNavigation
-//         handleTrackSelect(selectedTrack);
-//       }}
-//       scrollEnabled={false}
-//     />
-//   </ScrollView>
-// );
 const AllTab = ({ tracks }: { tracks: any[] }) => {
   // Gọi Hook ở cấp độ cao nhất
   const { handleTrackSelect } = useTrackContext();
@@ -71,8 +48,8 @@ const AllTab = ({ tracks }: { tracks: any[] }) => {
     </ScrollView>
   );
 };
-const context = useTrackContext();
-console.log("Track context:", context);
+// const context = useTrackContext();
+// console.log("Track context:", context);
 
 const TracksTabs = () => <TracksTab />;
 

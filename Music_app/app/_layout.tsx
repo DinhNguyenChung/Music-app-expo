@@ -21,7 +21,7 @@ const RootNavigation = () => {
   return (
     <Stack initialRouteName="launch">
       <Stack.Screen
-        name="launch"
+        name="(launch)"
         options={{
           headerShown: false,
         }}
