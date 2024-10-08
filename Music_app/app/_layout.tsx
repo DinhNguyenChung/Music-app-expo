@@ -19,15 +19,15 @@ export default function RootLayout() {
 
 const RootNavigation = () => {
   return (
-    <Stack initialRouteName="launch">
+    <Stack initialRouteName="(tabs)">
       <Stack.Screen
-        name="(launch)"
+        name="(tabs)"
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="(tabs)"
+        name="(launch)"
         options={{
           headerShown: false,
         }}
@@ -52,12 +52,6 @@ const RootNavigation = () => {
       />
       <Stack.Screen
         name="premium"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="registerPassword"
         options={{
           headerShown: false,
         }}
