@@ -84,7 +84,7 @@ const renderItem = ({ item }: { item: Song }) => (
         <Text style={styles.songTitle}>{item.song}</Text>
         <Text style={styles.songArtist}>{item.artist}</Text>
         <View style={styles.songDetails}>
-          <Text style={styles.songViews}>
+          <Text style={{ ...styles.songViews, fontSize: 12 }}>
             <Icon
               name="play"
               type="font-awesome"
@@ -95,11 +95,13 @@ const renderItem = ({ item }: { item: Song }) => (
             {item.view}
           </Text>
 
-          <Text style={styles.songTime}>
+          <Text
+            style={{ ...styles.songTime, fontSize: 12, alignSelf: "center" }}
+          >
             <Icon
               name="clock-o"
               type="font-awesome"
-              size={12}
+              size={11}
               color={"gray"}
               style={{ paddingLeft: 5, alignSelf: "center" }}
             />
@@ -126,9 +128,12 @@ const LibraryScreen = () => {
             justifyContent: "space-between",
             paddingHorizontal: 20,
             alignItems: "center",
+            paddingVertical: 10,
           }}
         >
-          <Text style={styles.title}>Your Library</Text>
+          <Text style={{ ...styles.title, paddingVertical: 10 }}>
+            Your Library
+          </Text>
           <TouchableOpacity>
             <Ionicons name="search" size={24} />
           </TouchableOpacity>
@@ -301,6 +306,8 @@ const styles = StyleSheet.create({
   songDetails: {
     flexDirection: "row",
     // justifyContent: "space-between",
+    alignItems: "center",
+    // alignSelf: "center",
 
     marginTop: 5,
   },
