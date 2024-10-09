@@ -48,7 +48,7 @@ const loginScreen = () => {
             height: 50,
             borderRadius: 25,
           }}
-          onPress={() => router.push("signup")}
+          onPress={() => router.push("/signup")}
         />
         <Button
           title="I already have an account"
@@ -59,7 +59,7 @@ const loginScreen = () => {
             height: 50,
             borderRadius: 25,
           }}
-          onPress={() => router.push("login")}
+          onPress={() => router.push("/login")}
         />
       </View>
     </View>

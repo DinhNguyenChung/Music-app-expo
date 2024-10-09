@@ -39,8 +39,8 @@ const AllTab = ({ tracks }: { tracks: any[] }) => {
         <TracksList
           tracks={tracks}
           onTrackSelect={(selectedTrack) => {
-            console.log("TrackList selected:", selectedTrack);
-            handleTrackSelect(selectedTrack);
+            console.log("TrackList selected in Search SCreen:", selectedTrack);
+            handleTrackSelect(selectedTrack, tracks);
           }}
           scrollEnabled={false}
         />
@@ -51,7 +51,9 @@ const AllTab = ({ tracks }: { tracks: any[] }) => {
 // const context = useTrackContext();
 // console.log("Track context:", context);
 
-const TracksTabs = () => <TracksTab />;
+const TracksTabs = ({ tracks }: { tracks: any[] }) => (
+  <TracksTab tracks={tracks} />
+);
 
 const AlbumsTab = () => <AlbumsTabs />;
 
@@ -83,7 +85,7 @@ const SearchScreen = ({
 
   const renderScene = SceneMap({
     all: () => <AllTab tracks={filteredSongs} />,
-    tracks: TracksTabs,
+    tracks: () => <TracksTabs tracks={filteredSongs} />,
     albums: AlbumsTab,
     artists: ArtistsTab,
   });

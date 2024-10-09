@@ -13,11 +13,13 @@ import { useEffect, useState } from "react";
 
 import { useTrackContext } from "@/components/TracksContext";
 import { useAudio } from "@/components/AudioContext";
+import library from "@/assets/data/library.json";
 
 const TabsNavigation = () => {
-  const { play, pause, stop } = useAudio(); // Gọi Hook ở đây
-  const { selectedTrack } = useTrackContext(); // Gọi Hook ở đây
-  const [isPlaying, setIsPlaying] = useState(true);
+  const { play, pause, stop, isPlaying, setIsPlaying } = useAudio(); // Gọi Hook ở đây
+  const { selectedTrack, handleTrackSelect, playlist, currentTrackIndex } =
+    useTrackContext(); // Gọi Hook ở đây
+
   const handlePlayPause = () => {
     if (isPlaying) {
       pause(); // Dừng phát
@@ -33,9 +35,16 @@ const TabsNavigation = () => {
     setIsPlaying(!isPlaying); // Cập nhật trạng thái phát/dừng
   };
   useEffect(() => {
+    console.log("CurrentTrackIndex in TabNavigation 1:", currentTrackIndex);
+  }, [currentTrackIndex]);
+  useEffect(() => {
     console.log("Selected track:", selectedTrack);
   }, [selectedTrack]);
-
+  useEffect(() => {
+    // handleTrackSelect(selectedTrack, playlist); // Đảm bảo library không trống
+    // console.log("Library:", library);
+    console.log("Playlist Tabnavigation:", playlist.length);
+  }, [playlist]);
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -132,7 +141,10 @@ const TabsNavigation = () => {
             if (selectedTrack) {
               router.push({
                 pathname: "/PlayerScreen",
-                params: { track: selectedTrack }, // Truyền track như tham số
+                params: {
+                  track: selectedTrack,
+                  playlist: library.map((track) => track.url),
+                },
               });
             }
           }}

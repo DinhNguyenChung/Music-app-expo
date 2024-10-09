@@ -9,8 +9,7 @@ import { Image, StyleSheet, View } from "react-native";
 import { TouchableHighlight } from "react-native";
 import { useAudio } from "./AudioContext";
 import { useTrackContext } from "./TracksContext";
-
-// import { Track, useActiveTrack } from "react-native-track-player";
+import { useEffect } from "react";
 
 export type TracksListItemProps = {
   track: {
@@ -38,7 +37,12 @@ const TracksListItem = ({
   tracks,
   index,
 }: TracksListItemProps) => {
-  const { selectedTrack } = useTrackContext(); // Sử dụng hook từ thư viện react-native-track-player
+  const {
+    selectedTrack,
+    handleTrackSelect,
+    currentTrackIndex,
+    setCurrentTrackIndex,
+  } = useTrackContext(); // Gọi Hook ở đây
   const isActive = false;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { play } = useAudio(); // Sử dụng AudioContext
@@ -46,18 +50,16 @@ const TracksListItem = ({
     if (play && track.url) {
       onTrackSelect(track); // Chọn track khi nhấn
       play(track.url); // Phát bài hát khi nhấn
+      handleTrackSelect(track, tracks); // Chọn track và cập nhật playlist
+      console.log("Index selected in ListItem:", index);
+      const newIndex = index;
+      setCurrentTrackIndex(newIndex); // Cập nhật chỉ số bài hát
+      // Log ngay sau khi gọi setCurrentTrackIndex
+      console.log("CurrentTrackIndex set to:", newIndex);
     } else {
       console.error("Audio context is not available or track URL is invalid.");
     }
   };
-  const handleNavigateToPlayer = async () => {
-    navigation.navigate("PlayerScreen", {
-      track: selectedTrack, // bài hát đã chọn
-      playlist: tracks, // Truyền toàn bộ danh sách tracks
-      currentTrackIndex: index, // Truyền index của track
-    });
-  };
-
   return (
     <>
       <TouchableHighlight onPress={() => handlePress()}>

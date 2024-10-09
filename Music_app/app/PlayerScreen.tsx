@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
-import { useTrackContext } from "@/components/TracksContext";
+import { useEffect, useState } from "react";
+import { TrackProvider, useTrackContext } from "@/components/TracksContext";
 import {
   AntDesign,
   Entypo,
@@ -17,15 +17,50 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { useAudio } from "@/components/AudioContext";
 
-type PlayerScreenRouteProp = RouteProp<{ Player: { track: any } }, "Player">;
+// type PlayerScreenRouteProp = RouteProp<{ Player: { track: any } }, "Player">;
+type PlayerScreenRouteProp = RouteProp<
+  { Player: { track: any; playlist?: any[]; currentTrackIndex: number } },
+  "Player"
+>;
 
 const PlayerScreen = () => {
   const route = useRoute<PlayerScreenRouteProp>();
-  // const { track } = route.params;
-  const { selectedTrack } = useTrackContext();
-  const track = selectedTrack || route.params.track;
+  const [repeatMode, setRepeatMode] = useState(false);
+  const {
+    selectedTrack,
+    currentTrackIndex,
+    setCurrentTrackIndex,
+    playlist,
+    skipForward,
+    skipBackward,
+  } = useTrackContext();
+  const { track = {}, playlist: playlistString = [] } =
+    playlist || route.params;
+  // const { track, playlist = [], currentTrackIndex } = route.params;
+  const { play, pause, stop, sound, isPlaying, setIsPlaying } = useAudio(); // Gọi Hook ở đây
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // Logic để phát nhạc nếu cần thiết
+    if (selectedTrack) {
+      console.log(`Playing: ${selectedTrack.title}`);
+      // Bắt đầu phát nhạc từ URL
+    }
+  }, [selectedTrack]);
+  // Toggle chế độ lặp lại
+  const toggleRepeat = () => {
+    setRepeatMode(!repeatMode);
+  };
+
+  useEffect(() => {
+    console.log("Current Track Index:", currentTrackIndex);
+    console.log("PlaylistLenght:", playlist.length);
+    console.log("Selected Track:", selectedTrack);
+    // console.log("Track:", track);
+  }, [currentTrackIndex, playlist, selectedTrack]);
+
   useEffect(() => {
     // Log track object for debugging
     console.log(
@@ -34,134 +69,172 @@ const PlayerScreen = () => {
     );
   }, [selectedTrack]);
 
-  if (!track) {
-    return <Text>No track selected</Text>;
-  }
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      pause(); // Dừng phát
+    } else {
+      const urlToPlay =
+        selectedTrack && selectedTrack.url ? selectedTrack.url : null;
+      if (urlToPlay) {
+        play(urlToPlay); // Phát bài hát
+      } else {
+        console.error("No valid URL to play.");
+      }
+    }
+    setIsPlaying(!isPlaying); // Cập nhật trạng thái phát/dừng
+  };
+  useEffect(() => {
+    console.log("Route params:", route.params);
+  }, [route.params]);
+  useEffect(() => {
+    console.log("Current Track Index has been updated:", currentTrackIndex);
+  }, [currentTrackIndex]);
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={{
-          uri:
-            track?.artwork ||
-            "https://images.unsplash.com/photo-1622386638685-6f5b0b6d8b9d",
-        }}
-        style={styles.backgroundImage}
-      >
-        <View style={{ height: "13%" }}>
-          <View style={styles.headerStyles}>
-            <TouchableOpacity>
-              <Text style={{ color: "white" }}>Play</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              // Quay về màn hình trước đó
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <AntDesign name="down" size={30} color="white" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View
-          style={{
-            paddingHorizontal: 10,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            height: "45%",
-            padding: 20,
+    <TrackProvider>
+      <View style={styles.container}>
+        <ImageBackground
+          source={{
+            uri:
+              selectedTrack?.artwork ||
+              (playlist.length > 0 && playlist[currentTrackIndex]?.artwork) ||
+              track?.artwork ||
+              "https://images.unsplash.com/photo-1622386638685-6f5b0b6d8b9d",
           }}
+          style={styles.backgroundImage}
         >
-          <View>
-            <View>
-              <Text style={styles.title}>{track.title || "Unknown Title"}</Text>
-              <Text style={styles.artist}>
-                {track.artist || "Unknown Artist"}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {/* <MaterialIcons name="multitrack-audio" size={96} color="white" /> */}
-              <Image
-                source={require("../pic/YourMusic/image-removebg-preview.png")}
-                style={{
-                  width: 376,
-                  height: 66,
-                  transform: [
-                    { scaleY: 1.07 }, // Tương tự như CATransform3D affine transform trong Swift
-                    { translateY: -2 }, // Chuyển ảnh lên trên một chút (ty: -0.04)
-                  ],
-                  // backgroundColor: "rgba(0,0,0,0.2)",
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                alignItems: "center",
-              }}
-            >
+          <View style={{ height: "13%" }}>
+            <View style={styles.headerStyles}>
               <TouchableOpacity>
-                <AntDesign
-                  name="retweet"
-                  size={24}
-                  // color={repeatMode ? "cyan" : "white"}
-                />
+                <Text style={{ color: "white" }}>Play</Text>
               </TouchableOpacity>
               <TouchableOpacity
-              //  onPress={skipBackward}
+                // Quay về màn hình trước đó
+                onPress={() => {
+                  navigation.goBack();
+                }}
               >
-                <AntDesign name="stepbackward" size={34} color="white" />
+                <AntDesign name="down" size={30} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity
-              //  onPress={handlePlayPause}
-              >
-                <Ionicons
-                  // name={isPlaying ? "pause-circle-sharp" : "play-circle-sharp"}
-                  name="pause-circle-sharp"
-                  size={100}
-                  color="white"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-              //  onPress={skipForward}
-              >
-                <AntDesign name="stepforward" size={34} color="white" />
-              </TouchableOpacity>
-              <Entypo name="dots-three-horizontal" size={24} color="white" />
             </View>
           </View>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
               paddingHorizontal: 10,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              height: "45%",
+              padding: 20,
             }}
           >
+            <View>
+              <View>
+                <Text style={styles.title}>
+                  {selectedTrack?.title ||
+                    (playlist && playlist[currentTrackIndex]?.title) ||
+                    selectedTrack?.title ||
+                    "Unknown Title"}
+                </Text>
+                <Text style={styles.artist}>
+                  {selectedTrack?.artist ||
+                    (playlist && playlist[currentTrackIndex]?.artist) ||
+                    selectedTrack?.artist ||
+                    "Unknown Artist"}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {/* <MaterialIcons name="multitrack-audio" size={96} color="white" /> */}
+                <Image
+                  source={require("../pic/YourMusic/image-removebg-preview.png")}
+                  style={{
+                    width: 376,
+                    height: 66,
+                    transform: [
+                      { scaleY: 1.07 }, // Tương tự như CATransform3D affine transform trong Swift
+                      { translateY: -2 }, // Chuyển ảnh lên trên một chút (ty: -0.04)
+                    ],
+                    // backgroundColor: "rgba(0,0,0,0.2)",
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity onPress={toggleRepeat}>
+                  <AntDesign
+                    name="retweet"
+                    size={24}
+                    color={repeatMode ? "cyan" : "white"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={
+                    // () => handleSkip("previous")
+                    skipBackward
+                  }
+                >
+                  <AntDesign name="stepbackward" size={34} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handlePlayPause}>
+                  <Ionicons
+                    name={
+                      isPlaying ? "pause-circle-sharp" : "play-circle-sharp"
+                    }
+                    // name="pause-circle-sharp"
+                    size={100}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={
+                    // () => handleSkip("next")
+                    skipForward
+                  }
+                >
+                  <AntDesign name="stepforward" size={34} color="white" />
+                </TouchableOpacity>
+                <Entypo name="dots-three-horizontal" size={24} color="white" />
+              </View>
+            </View>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingHorizontal: 10,
+              }}
             >
-              <TouchableOpacity style={styles.styleHeatandCommet}>
-                <AntDesign name="hearto" size={15} color="white" />
-                <Text style={styles.titlemini}>12K</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.styleHeatandCommet}>
-                <MaterialIcons name="chat" size={24} color="white" />
-                <Text style={styles.titlemini}>450</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <TouchableOpacity style={styles.styleHeatandCommet}>
+                  <AntDesign name="hearto" size={15} color="white" />
+                  <Text style={styles.titlemini}>12K</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.styleHeatandCommet}>
+                  <MaterialIcons name="chat" size={24} color="white" />
+                  <Text style={styles.titlemini}>450</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity>
+                <Feather name="upload" size={24} color="white" />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity>
-              <Feather name="upload" size={24} color="white" />
-            </TouchableOpacity>
           </View>
-        </View>
-      </ImageBackground>
-    </View>
+        </ImageBackground>
+      </View>
+    </TrackProvider>
   );
 };
 
