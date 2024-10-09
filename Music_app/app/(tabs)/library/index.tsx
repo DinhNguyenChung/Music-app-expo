@@ -6,6 +6,7 @@ import {
   FontAwesome5,
   FontAwesome6,
 } from "@expo/vector-icons";
+import { Href, router } from "expo-router";
 import { useState } from "react";
 import { FlatList, Image, ScrollView } from "react-native";
 import {
@@ -151,7 +152,12 @@ const LibraryScreen = () => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity style={styles.tabHead}>
+            <TouchableOpacity
+              onPress={() =>
+                router.push("/(tabs)/library/Playlist" as Href<string | object>)
+              }
+              style={styles.tabHead}
+            >
               <Text>Playlists</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.tabHead}>
