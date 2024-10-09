@@ -17,25 +17,41 @@ const HomeScreenLayout = () => {
         <Stack.Screen
           name="detailsChart"
           options={{
-            headerTitle: '',
-            headerBackTitle: 'Back',
-            headerStyle: {backgroundColor: 'transparent'},
+            headerTitle: "",
+            headerBackTitle: "Back",
+            headerStyle: { backgroundColor: "transparent" },
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="detailsTrending"
           options={{
             headerTitle: '',
             headerBackTitle: 'Back',
             headerStyle: {backgroundColor: 'transparent'},
           }}
-        />    
+        />     */}
         <Stack.Screen
           name="artistProfile"
           options={{
-            headerTitle: '',
-            headerBackTitle: 'Back',
-            headerStyle: {backgroundColor: 'transparent'},
+            headerTitle: "",
+            headerBackTitle: "Back",
+            headerStyle: { backgroundColor: "transparent" },
+          }}
+        />
+        <Stack.Screen
+          name="personalProfile"
+          options={{
+            headerTitle: "",
+            headerBackTitle: "Back",
+            headerStyle: { backgroundColor: "transparent" },
+          }}
+        />
+        <Stack.Screen
+          name="personalInfo"
+          options={{
+            headerTitle: "",
+            headerBackTitle: "Back",
+            headerStyle: { backgroundColor: "transparent" },
           }}
         />
       </Stack>

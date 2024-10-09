@@ -22,6 +22,8 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 
+import { styles } from "./FeedScreenStyles";
+
 const dataComment = [
   {
     id: 1,
@@ -128,6 +130,7 @@ const FeedScreen = () => {
   const toggleModalComment = () => {
     setModalVisible(!isModalVisible);
   };
+
   const renderComment = ({ item }) => (
     <View style={{ flexDirection: "row", paddingVertical: 10 }}>
       <Image
@@ -139,6 +142,7 @@ const FeedScreen = () => {
           <Text style={{ fontWeight: "bold" }}>{item.user.name}</Text>
           <Text>{item.comment}</Text>
         </View>
+
         <View style={{ flexDirection: "row", marginTop: 5 }}>
           <Text style={{ marginRight: 10 }}>{item.timestamp}</Text>
           <TouchableOpacity>
@@ -156,15 +160,7 @@ const FeedScreen = () => {
             keyExtractor={(reply) => reply.id.toString()}
             renderItem={({ item: reply }) => (
               <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <Image
-                  source={reply.user.avatar}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 15,
-                    marginRight: 10,
-                  }}
-                />
+                <Image source={reply.user.avatar} style={styles.avataComment} />
                 <View>
                   <View style={{ flexDirection: "row" }}>
                     <Text style={{ fontWeight: "bold" }}>
@@ -172,6 +168,7 @@ const FeedScreen = () => {
                     </Text>
                     <Text>{reply.comment}</Text>
                   </View>
+
                   <View style={{ flexDirection: "row", marginTop: 5 }}>
                     <Text style={{ marginRight: 10 }}>{reply.timestamp}</Text>
                     <TouchableOpacity>
@@ -192,8 +189,8 @@ const FeedScreen = () => {
     </View>
   );
   const renderFeed = ({ item }) => (
-    <View style={{ margin: 20, overflow: "hidden", gap: 20 }}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+    <View style={styles.containerRenderFeed}>
+      <View style={styles.containerHeaderPost}>
         <Image source={item.avtPath} style={{ width: 35, height: 35 }} />
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
@@ -215,15 +212,7 @@ const FeedScreen = () => {
           source={item.imgPath}
           style={{ position: "absolute", height: 375, width: 375 }}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            backgroundColor: "rgba(0, 0, 0, 0.2)",
-            padding: 20,
-            height: 100,
-          }}
-        >
+        <View style={styles.contentOnImage}>
           <View style={{ gap: 5 }}>
             <Text style={{ fontSize: 30, fontWeight: "bold", color: "white" }}>
               {item.song}
@@ -273,28 +262,10 @@ const FeedScreen = () => {
         transparent={true}
         animationType="slide"
       >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              maxHeight: "80%",
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <Text
-                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
-              >
-                3 comments
-              </Text>
+        <View style={styles.containerModalComment}>
+          <View style={styles.containerComment}>
+            <View style={styles.headerModalComment}>
+              <Text style={styles.totalComment}>3 comments</Text>
               <TouchableOpacity onPress={toggleModalComment}>
                 <AntDesign name="down" size={24} color="gray" />
               </TouchableOpacity>
@@ -306,31 +277,15 @@ const FeedScreen = () => {
               renderItem={renderComment}
               showsVerticalScrollIndicator={false}
             />
-            <View
-              style={{
-                paddingBottom: 20,
-                paddingTop: 20,
-                flexDirection: "row",
-                gap: 10,
-              }}
-            >
+            <View style={styles.containerEnterComment}>
               <Image source={require("../../../assets/Feed/Avatar 13.png")} />
               <Input
                 rightIcon={
                   <MaterialIcons name="emoji-emotions" size={24} color="gray" />
                 }
                 placeholder="Write a comment..."
-                inputContainerStyle={{
-                  marginBottom: -25,
-                  borderBottomWidth: 0,
-                }}
-                containerStyle={{
-                  height: 50,
-                  width: 320,
-                  borderWidth: 1,
-                  borderColor: "gray",
-                  borderRadius: 25,
-                }}
+                inputContainerStyle={styles.inputComment}
+                containerStyle={styles.enterCommet}
               />
             </View>
           </View>

@@ -14,6 +14,13 @@ const SignUp = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="registerPassword"
+          options={{
+            headerTitle: "registerPassword",
+            headerShown: false,
+          }}
+        />
       </Stack>
     </View>
   );
