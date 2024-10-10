@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useTrackContext } from "@/components/TracksContext";
 import { useAudio } from "@/components/AudioContext";
 import library from "@/assets/data/library.json";
+import { unknownTrackImageUri } from "@/constants/image";
 
 const TabsNavigation = () => {
   const { play, pause, stop, isPlaying, setIsPlaying } = useAudio(); // Gọi Hook ở đây
@@ -160,7 +161,9 @@ const TabsNavigation = () => {
               {selectedTrack && (
                 <>
                   <Image
-                    source={{ uri: selectedTrack.artwork }}
+                    source={{
+                      uri: selectedTrack.artwork || unknownTrackImageUri,
+                    }}
                     style={{
                       width: 50,
                       height: 50,

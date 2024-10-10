@@ -18,6 +18,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { useAudio } from "@/components/AudioContext";
+import { unknownTrackImageUri } from "@/constants/image";
 
 // type PlayerScreenRouteProp = RouteProp<{ Player: { track: any } }, "Player">;
 type PlayerScreenRouteProp = RouteProp<
@@ -99,7 +100,7 @@ const PlayerScreen = () => {
               selectedTrack?.artwork ||
               (playlist.length > 0 && playlist[currentTrackIndex]?.artwork) ||
               track?.artwork ||
-              "https://images.unsplash.com/photo-1622386638685-6f5b0b6d8b9d",
+              unknownTrackImageUri,
           }}
           style={styles.backgroundImage}
         >
