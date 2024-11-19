@@ -1,7 +1,7 @@
 import { colors, fontSize } from "@/constants/Colors";
 import { defaultStyles } from "@/styles";
 import { useRouter } from "expo-router";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import {
   ImageBackground,
   SafeAreaView,
@@ -9,10 +9,12 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 
 import { styles } from "./LoginStyle";
+import axios from "axios";
 
 /**
  * MÀN HÌNH ĐĂNG NHẬP dành cho người đã có tài khoản
@@ -23,6 +25,36 @@ import { styles } from "./LoginStyle";
 
 const LoginScreen = () => {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSubmit() {
+    console.log(email, password);
+    const userData = {
+      email: email,
+      password,
+    };
+
+    axios.post("http://172.20.10.2:5001/login-user", userData).then((res) => {
+      console.log(res.data);
+      if (res.data.status == "ok") {
+        Alert.alert("Đăng nhập thành công");
+        router.push("/(tabs)/home");
+        // AsyncStorage.setItem('token', res.data.data);
+        // AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+        // AsyncStorage.setItem('userType',res.data.userType)
+        // navigation.navigate('Home');
+        // if(res.data.userType=="Admin"){
+        //    navigation.navigate('AdminScreen');
+        // }else{
+        //   navigation.navigate('Home');
+        // }
+      } else {
+        Alert.alert("Error", "Thông tin không hợp lệ !");
+      }
+    });
+  }
+
   return (
     <View style={styles.containerLoginScreen}>
       <ImageBackground
@@ -52,6 +84,7 @@ const LoginScreen = () => {
             placeholderTextColor={"#BFC4C1"}
             inputStyle={styles.inputStyle}
             containerStyle={styles.containerInputStyle}
+            onChangeText={(text) => setEmail(text)}
           />
         </View>
         <View>
@@ -61,6 +94,9 @@ const LoginScreen = () => {
           <Input
             inputStyle={styles.inputStyle}
             containerStyle={{ width: "100%" }}
+            onChangeText={(text) => setPassword(text)}
+            placeholder="Enter your password"
+            secureTextEntry
           />
         </View>
         {/* <Text>Warning</Text> */}
@@ -69,19 +105,20 @@ const LoginScreen = () => {
             title={"Log in"}
             titleStyle={styles.titleButtonStyle}
             buttonStyle={styles.buttonStyle}
-            onPress={() => router.push("/(tabs)/home")}
+            // onPress={() => router.push("/(tabs)/home")}
+            onPress={handleSubmit}
           />
         </View>
 
         <View style={styles.footerText}>
-          <TouchableOpacity onPress={() => router.push("login")}>
+          <TouchableOpacity onPress={() => router.push("/login")}>
             <Text style={styles.textAsButton}>Forgot your password?</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.footerText}>
           <Text style={{ color: "white" }}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("signup")}>
+          <TouchableOpacity onPress={() => router.push("/signup")}>
             {/* textDecorationLine: 'underline' */}
             <Text style={styles.textAsButton}> Sign up for Spotify</Text>
           </TouchableOpacity>

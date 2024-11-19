@@ -131,6 +131,11 @@ const HomeScreen = () => {
     new Animated.Value(Dimensions.get("window").width)
   ).current;
 
+  const handleLogout = () => {
+    setIsModalMenuVisible(false);
+    router.push("/login");
+  };
+
   // Các toggle
   const toggleModalMenu = () => {
     if (isModalMenuVisible) {
@@ -421,6 +426,7 @@ const HomeScreen = () => {
                 titleStyle={styles.titleButtonMenu}
                 buttonStyle={styles.buttonActionMenu}
                 containerStyle={styles.containerButtonMenu}
+                onPress={() => handleLogout()}
               />
             </View>
           </Animated.View>

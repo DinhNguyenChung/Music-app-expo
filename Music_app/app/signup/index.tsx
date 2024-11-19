@@ -1,7 +1,8 @@
 import { colors, fontSize } from "@/constants/Colors";
 import { defaultStyles } from "@/styles";
 import { useRouter } from "expo-router";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
+
 import {
   ImageBackground,
   SafeAreaView,
@@ -9,6 +10,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 
@@ -21,9 +23,26 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 
 const SignUp = () => {
   const router = useRouter();
+  const [email, setEmail] = useState("");
 
   const handlePressRegisterPassword = () => {
-    router.push("/signup/registerPassword");
+    console.log("Email: ", email);
+    if (!validateForm()) {
+      Alert.alert("Lỗi", "Vui lòng nhập địa chỉ email hợp lệ");
+      return;
+    }
+    router.push(`/signup/registerPassword?email=${encodeURIComponent(email)}`);
+  };
+  const validateForm = () => {
+    // Kiểm tra Email
+    // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!email || !emailRegex.test(email)) {
+      Alert.alert("Lỗi", "Vui lòng nhập địa chỉ email hợp lệ");
+      return false;
+    }
+    return true;
   };
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -59,8 +78,10 @@ const SignUp = () => {
               height: 50,
               padding: 10,
               borderColor: "white",
+              color: "white",
             }}
             containerStyle={{ width: "100%" }}
+            onChangeText={(text) => setEmail(text)}
           />
         </View>
         {/* <Text>Warning</Text> */}
@@ -220,7 +241,7 @@ const SignUp = () => {
 
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={{ color: "white" }}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("login")}>
+          <TouchableOpacity onPress={() => router.push("/login")}>
             <Text style={{ color: "white", fontWeight: "bold" }}>
               {" "}
               Log in here

@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderColor: "white",
+    color: "white",
   },
   containerInputStyle: {
     width: "100%",
