@@ -140,13 +140,18 @@ const TabsNavigation = () => {
           }}
           onPress={() => {
             if (selectedTrack) {
-              router.push({
-                pathname: "/PlayerScreen",
-                params: {
-                  track: selectedTrack,
-                  playlist: library.map((track) => track.url),
-                },
-              });
+              // router.push({
+              //   pathname: "/PlayerScreen",
+              //   params: {
+              //     track: selectedTrack,
+              //     playlist: library.map((track) => track.url),
+              //   },
+              // });
+              router.push(
+                `/PlayerScreen?trackId=${
+                  selectedTrack.id
+                }&playlist=${encodeURIComponent(JSON.stringify(library))}`
+              );
             }
           }}
         >

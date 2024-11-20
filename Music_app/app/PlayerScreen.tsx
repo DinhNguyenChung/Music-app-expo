@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { TrackProvider, useTrackContext } from "@/components/TracksContext";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@expo/vector-icons";
 import { useAudio } from "@/components/AudioContext";
 import { unknownTrackImageUri } from "@/constants/image";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
 // type PlayerScreenRouteProp = RouteProp<{ Player: { track: any } }, "Player">;
 type PlayerScreenRouteProp = RouteProp<
@@ -27,21 +27,42 @@ type PlayerScreenRouteProp = RouteProp<
 >;
 
 const PlayerScreen = () => {
-  const route = useRoute<PlayerScreenRouteProp>();
+  // const router = useRoute<PlayerScreenRouteProp>();
+  const router = useRouter();
+  const { trackId, playlist } = useLocalSearchParams(); // Lấy trackId và playlist từ query string
   const [repeatMode, setRepeatMode] = useState(false);
   const {
     selectedTrack,
     currentTrackIndex,
     setCurrentTrackIndex,
-    playlist,
+    // playlist,
+    playlist: contextPlaylist,
     skipForward,
     skipBackward,
   } = useTrackContext();
-  const { track = {}, playlist: playlistString = [] } =
-    playlist || route.params;
+  // const { track = {}, playlist: playlistString = [] } =
+  //   playlist || route.params;
+  const parsedPlaylist =
+    typeof playlist === "string"
+      ? JSON.parse(decodeURIComponent(playlist))
+      : [];
+  useEffect(() => {
+    // Cập nhật bài hát được chọn dựa trên trackId
+    if (trackId) {
+      const index = parsedPlaylist.findIndex(
+        (track: any) => track.id === trackId
+      );
+      if (index !== -1) {
+        setCurrentTrackIndex(index);
+      }
+    }
+  }, [trackId, parsedPlaylist, setCurrentTrackIndex]);
   // const { track, playlist = [], currentTrackIndex } = route.params;
   const { play, pause, stop, sound, isPlaying, setIsPlaying } = useAudio(); // Gọi Hook ở đây
-  const navigation = useNavigation();
+  useEffect(() => {
+    console.log("Router:", router);
+    console.log("Params:", trackId, playlist);
+  }, [router, trackId, playlist]);
 
   useEffect(() => {
     // Logic để phát nhạc nếu cần thiết
@@ -84,22 +105,28 @@ const PlayerScreen = () => {
     }
     setIsPlaying(!isPlaying); // Cập nhật trạng thái phát/dừng
   };
-  useEffect(() => {
-    console.log("Route params:", route.params);
-  }, [route.params]);
-  useEffect(() => {
-    console.log("Current Track Index has been updated:", currentTrackIndex);
-  }, [currentTrackIndex]);
+  // useEffect(() => {
+  //   console.log("Route params:", route.params);
+  // }, [route.params]);
+  // useEffect(() => {
+  //   console.log("Current Track Index has been updated:", currentTrackIndex);
+  // }, [currentTrackIndex]);
 
   return (
     <TrackProvider>
       <View style={styles.container}>
         <ImageBackground
+          // source={{
+          //   uri:
+          //     selectedTrack?.artwork ||
+          //     (playlist.length > 0 && playlist[currentTrackIndex]?.artwork) ||
+          //     track?.artwork ||
+          //     unknownTrackImageUri,
+          // }}
           source={{
             uri:
               selectedTrack?.artwork ||
-              (playlist.length > 0 && playlist[currentTrackIndex]?.artwork) ||
-              track?.artwork ||
+              contextPlaylist[currentTrackIndex]?.artwork ||
               unknownTrackImageUri,
           }}
           style={styles.backgroundImage}
@@ -112,7 +139,8 @@ const PlayerScreen = () => {
               <TouchableOpacity
                 // Quay về màn hình trước đó
                 onPress={() => {
-                  navigation.goBack();
+                  // navigation.goBack();
+                  router.back();
                 }}
               >
                 <AntDesign name="down" size={30} color="white" />
@@ -129,17 +157,23 @@ const PlayerScreen = () => {
           >
             <View>
               <View>
-                <Text style={styles.title}>
+                {/* <Text style={styles.title}>
                   {selectedTrack?.title ||
                     (playlist && playlist[currentTrackIndex]?.title) ||
                     selectedTrack?.title ||
                     "Unknown Title"}
+                </Text> */}
+                <Text style={styles.title}>
+                  {selectedTrack?.title || "Unknown Title"}
                 </Text>
-                <Text style={styles.artist}>
+                {/* <Text style={styles.artist}>
                   {selectedTrack?.artist ||
                     (playlist && playlist[currentTrackIndex]?.artist) ||
                     selectedTrack?.artist ||
                     "Unknown Artist"}
+                </Text> */}
+                <Text style={styles.artist}>
+                  {selectedTrack?.artist || "Unknown Artist"}
                 </Text>
               </View>
               <View
