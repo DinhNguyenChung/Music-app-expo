@@ -83,9 +83,9 @@ export const AlbumsTabs = () => {
               (item) => item.albumname === albumname
             ).length;
             return (
-              <TouchableOpacity>
+              <TouchableOpacity key={albumname}>
                 <View
-                  key={index}
+                  // key={index}
                   style={{ flexDirection: "row", paddingVertical: 10 }}
                 >
                   {/* Hiển thị tên album và số lượng bài hát */}

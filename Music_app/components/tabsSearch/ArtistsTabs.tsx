@@ -81,9 +81,9 @@ export const ArtistsTabs = () => {
             ).length;
 
             return (
-              <TouchableOpacity>
+              <TouchableOpacity key={artist}>
                 <View
-                  key={index}
+                  // key={index}
                   style={{ flexDirection: "row", paddingVertical: 10 }}
                 >
                   {/* Hiển thị ảnh bài hát và thông tin nghệ sĩ */}

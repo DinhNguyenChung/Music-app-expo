@@ -1,19 +1,21 @@
 import React from "react";
-import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { Stack } from "expo-router";
 import { SafeAreaView, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TrackProvider } from "@/components/TracksContext";
 import { AudioProvider } from "@/components/AudioContext";
-
+import { NavigationContainer } from "@react-navigation/native";
 export default function RootLayout() {
   return (
-    <AudioProvider>
-      <TrackProvider>
-        <RootNavigation />
-        <ExpoStatusBar style="auto" />
-      </TrackProvider>
-    </AudioProvider>
+    <SafeAreaProvider>
+      <AudioProvider>
+        <TrackProvider>
+          <RootNavigation />
+          <ExpoStatusBar style="auto" />
+        </TrackProvider>
+      </AudioProvider>
+    </SafeAreaProvider>
   );
 }
 

@@ -35,7 +35,7 @@ const LoginScreen = () => {
       password,
     };
 
-    axios.post("http://172.20.10.2:5001/login-user", userData).then((res) => {
+    axios.post("http://172.29.211.36:5001/login-user", userData).then((res) => {
       console.log(res.data);
       if (res.data.status == "ok") {
         Alert.alert("Đăng nhập thành công");

@@ -8,7 +8,6 @@ import { fontSize } from "@/constants/Colors";
 import { BlurView } from "expo-blur";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
-
 // Dummy play function for demonstration purposes
 
 import { useTrackContext } from "@/components/TracksContext";
@@ -140,13 +139,18 @@ const TabsNavigation = () => {
           }}
           onPress={() => {
             if (selectedTrack) {
-              router.push({
-                pathname: "/PlayerScreen",
-                params: {
-                  track: selectedTrack,
-                  playlist: library.map((track) => track.url),
-                },
-              });
+              // router.push({
+              //   pathname: "/PlayerScreen",
+              //   params: {
+              //     track: selectedTrack,
+              //     playlist: library.map((track) => track.url),
+              //   },
+              // });
+              router.push(
+                `/PlayerScreen?trackId=${
+                  selectedTrack.id
+                }&playlist=${encodeURIComponent(JSON.stringify(library))}`
+              );
             }
           }}
         >

@@ -97,20 +97,36 @@ const SearchScreen = ({
         onIndexChange={setIndex}
         initialLayout={{ width: Dimensions.get("window").width }}
         style={{ paddingHorizontal: 24 }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: "cyan", height: 3 }}
-            style={{ backgroundColor: "white" }}
-            labelStyle={{
-              color: "gray",
-              fontSize: 15,
-              textTransform: "none",
-              fontWeight: "600",
-            }}
-            activeColor={"cyan"}
-          />
-        )}
+        // renderTabBar={(props) => (
+        //   <TabBar
+        //     {...props}
+        //     indicatorStyle={{ backgroundColor: "cyan", height: 3 }}
+        //     style={{ backgroundColor: "white" }}
+        //     labelStyle={{
+        //       color: "gray",
+        //       fontSize: 15,
+        //       textTransform: "none",
+        //       fontWeight: "600",
+        //     }}
+        //     activeColor={"cyan"}
+        //   />
+        // )}
+        renderTabBar={(props) => {
+          return (
+            <TabBar
+              {...props}
+              indicatorStyle={{ backgroundColor: "cyan", height: 3 }}
+              style={{ backgroundColor: "white" }}
+              labelStyle={{
+                color: "gray",
+                fontSize: 15,
+                textTransform: "none",
+                fontWeight: "600",
+              }}
+              activeColor={"cyan"}
+            />
+          );
+        }}
       />
     </SafeAreaView>
   );
