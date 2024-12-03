@@ -55,7 +55,7 @@ const RegisterPassword = () => {
       password,
     };
     axios
-      .post("http://172.20.10.2:5001/register", userData, { timeout: 10000 })
+      .post("http://172.29.211.36:5001/register", userData, { timeout: 10000 })
       .then((res) => {
         console.log(res.data);
         if (res.data.status === "ok") {

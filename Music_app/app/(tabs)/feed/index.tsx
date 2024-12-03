@@ -65,7 +65,7 @@ const dataComment = [
       name: "Michael Key",
       avatar: require("../../../assets/Feed/Avatar 9.png"),
     },
-    comment: "@Jason Smith Deserunt officia consectetur adipi",
+    comment: "Deserunt officia consectetur adipi",
     timestamp: "40m",
     likes: 2,
     replies: [
@@ -75,7 +75,7 @@ const dataComment = [
           name: "Kiran Glaucus",
           avatar: require("../../../assets/Feed/Avatar 9.png"),
         },
-        comment: "Esse consequat cillum ex",
+        comment: "Esse consequat cillum exfdg dgfcnsectetur adipi",
         timestamp: "40m",
         likes: 2,
         replies: [],
@@ -132,19 +132,25 @@ const FeedScreen = () => {
   };
 
   const renderComment = ({ item }) => (
-    <View style={{ flexDirection: "row", paddingVertical: 10 }}>
+    <View
+      style={{
+        flexDirection: "row",
+        paddingVertical: 10,
+        width: 300,
+      }}
+    >
       <Image
         source={item.user.avatar}
         style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
       />
-      <View>
+      <View style={{ width: "100%" }}>
         <View style={{ flexDirection: "row" }}>
-          <Text style={{ fontWeight: "bold" }}>{item.user.name}</Text>
-          <Text>{item.comment}</Text>
+          <Text style={{ fontWeight: "bold" }}>{item.user.name} </Text>
+          <Text style={{ flexWrap: "wrap" }}>{item.comment}</Text>
         </View>
 
         <View style={{ flexDirection: "row", marginTop: 5 }}>
-          <Text style={{ marginRight: 10 }}>{item.timestamp}</Text>
+          <Text style={{ marginRight: 10 }}>{item.timestamp} </Text>
           <TouchableOpacity>
             <Text style={{ marginRight: 10 }}>{item.likes} like</Text>
           </TouchableOpacity>
@@ -200,7 +206,7 @@ const FeedScreen = () => {
             <AntDesign name="checkcircleo" size={13} color="blue" />
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-            <Text>{item.description}</Text>
+            <Text>{item.description} </Text>
             <Entypo name="dot-single" size={20} color="gray" />
             <Text>{item.date}</Text>
           </View>
@@ -217,7 +223,9 @@ const FeedScreen = () => {
             <Text style={{ fontSize: 30, fontWeight: "bold", color: "white" }}>
               {item.song}
             </Text>
-            <Text style={{ fontSize: 18, color: "white" }}>{item.artists}</Text>
+            <Text style={{ fontSize: 18, color: "white" }}>
+              {item.artists}{" "}
+            </Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
             <Ionicons name="play-outline" size={15} color="white" />
@@ -286,6 +294,11 @@ const FeedScreen = () => {
                 placeholder="Write a comment..."
                 inputContainerStyle={styles.inputComment}
                 containerStyle={styles.enterCommet}
+              />
+              <Button
+                title="Send"
+                titleStyle={{ color: "black" }}
+                buttonStyle={{ backgroundColor: "none" }}
               />
             </View>
           </View>

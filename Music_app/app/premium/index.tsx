@@ -52,7 +52,7 @@ const dataPremium = [
 
 const SubscribePremium = () => {
   const router = useRouter();
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: (typeof dataPremium)[0] }) => (
     <View
       style={{
         backgroundColor: "white",
@@ -70,7 +70,7 @@ const SubscribePremium = () => {
     >
       {/* Hiển thị tên gói Premium */}
       <View>
-        <Text style={{ fontSize: 60, fontWeight: "bold" }}>{item.title}</Text>
+        <Text style={{ fontSize: 40, fontWeight: "bold" }}>{item.title}</Text>
       </View>
 
       {/* Hiển thị giá và chức năng */}
@@ -91,11 +91,11 @@ const SubscribePremium = () => {
             borderRadius: 18,
           }}
         >
-          <Text style={{ color: "#A581E9", fontWeight: "bold" }}>
+          <Text style={{ color: "#A581E9", fontWeight: "bold", fontSize: 12 }}>
             {item.free}
           </Text>
         </View>
-        <Text style={{ fontWeight: "bold" }}>{item.price}</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 12 }}>{item.price}</Text>
       </View>
 
       {/* Hiển thị các chức năng */}
@@ -105,19 +105,19 @@ const SubscribePremium = () => {
           style={{ flexDirection: "row", paddingRight: 10, marginVertical: 8 }}
         >
           <Text
-            style={{ fontSize: 18, color: "#4CAF50", marginRight: 8 }}
+            style={{ fontSize: 15, color: "#4CAF50", marginRight: 8 }}
           >{`\u2714`}</Text>
-          <Text style={{ fontSize: 18 }}>{feature}</Text>
+          <Text style={{ fontSize: 15 }}>{feature}</Text>
         </View>
       ))}
 
       {/* Nút Subscribe */}
       <View style={{ marginTop: "auto", paddingBottom: 20 }}>
         <Button
-          title="Subscribe"
-          titleStyle={{ fontWeight: "bold", fontSize: 20, color: "black" }}
+          title="Subscribe now"
+          titleStyle={{ fontWeight: "bold", fontSize: 20, color: "white" }}
           buttonStyle={{
-            backgroundColor: "#3BE477",
+            backgroundColor: "#202A32",
             width: "100%",
             height: 50,
             borderRadius: 25,
@@ -135,10 +135,10 @@ const SubscribePremium = () => {
         source={require("../../assets/LaunchScreen/PremiumBG.png")}
         style={{ width: "100%", height: "100%", position: "absolute" }}
       />
-      <View>
+      <View style={{ width: "90%" }}>
         <Text
           style={{
-            fontSize: 50,
+            fontSize: 40,
             color: "white",
             fontWeight: "bold",
             textAlign: "center",
@@ -157,7 +157,7 @@ const SubscribePremium = () => {
         showsHorizontalScrollIndicator={false}
       />
       <View style={{ paddingBottom: 70 }}>
-        <TouchableOpacity onPress={() => router.push("(tabs)")}>
+        <TouchableOpacity onPress={() => router.push("/(tabs)/home")}>
           <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
             Back home
           </Text>

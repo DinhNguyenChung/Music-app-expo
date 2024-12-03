@@ -53,7 +53,7 @@ const SignUp = () => {
       <View style={{ width: 280, paddingTop: 150 }}>
         <Text
           style={{
-            fontSize: 50,
+            fontSize: 40,
             color: "white",
             fontWeight: "bold",
             textAlign: "center",

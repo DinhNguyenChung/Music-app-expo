@@ -153,9 +153,7 @@ const LibraryScreen = () => {
             }}
           >
             <TouchableOpacity
-              onPress={() =>
-                router.push("/(tabs)/library/Playlist" as Href<string | object>)
-              }
+              onPress={() => router.push("/(tabs)/library/Playlist" as Href)}
               style={styles.tabHead}
             >
               <Text>Playlists</Text>

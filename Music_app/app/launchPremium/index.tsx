@@ -31,8 +31,15 @@ const launchPremium = () => {
         source={require("../../assets/LaunchScreen/IconLoading.png")}
         style={{ marginTop: 100 }}
       />
-      <View style={{ width: 250, alignContent: "center" }}>
-        <Text style={{ fontSize: 50, color: "white", fontWeight: "bold" }}>
+      <View style={{ width: 280 }}>
+        <Text
+          style={{
+            fontSize: 50,
+            color: "white",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
           Welcome to Premium
         </Text>
       </View>

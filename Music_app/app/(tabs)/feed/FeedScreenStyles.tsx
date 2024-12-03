@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
   },
   enterCommet: {
     height: 50,
-    width: 320,
+    width: 230,
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 25,
@@ -59,9 +59,11 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   containerEnterComment: {
+    width: 300,
     paddingBottom: 20,
     paddingTop: 20,
     flexDirection: "row",
     gap: 10,
+    alignItems: "center",
   },
 });

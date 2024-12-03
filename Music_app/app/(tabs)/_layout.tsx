@@ -61,6 +61,7 @@ const TabsNavigation = () => {
             tabBarStyle: {
               position: "absolute",
               paddingVertical: 8,
+              paddingTop: 8,
             },
             tabBarBackground: () => (
               <BlurView
@@ -68,7 +69,7 @@ const TabsNavigation = () => {
                 style={{
                   ...StyleSheet.absoluteFillObject,
                   overflow: "hidden",
-                  backgroundColor: "#fff",
+                  backgroundColor: "transparent",
                 }}
               />
             ),
@@ -136,6 +137,7 @@ const TabsNavigation = () => {
             backgroundColor: "#fff",
             borderColor: "#ccc",
             zIndex: 100,
+            borderTopWidth: 1,
           }}
           onPress={() => {
             if (selectedTrack) {
